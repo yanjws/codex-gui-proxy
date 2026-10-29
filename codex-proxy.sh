@@ -183,7 +183,6 @@ export no_proxy="localhost,127.0.0.1,::1"
 
 nohup "$CODEX_BIN" \
     --proxy-server="$PROXY_URL" \
-    --proxy-bypass-list="<-loopback>" \
     > /dev/null 2>&1 &
 
 sleep 2

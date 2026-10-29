@@ -199,11 +199,10 @@ Supported schemes: `http`, `socks4`, `socks5`, `quic`.
 
 ```bash
 /Applications/Codex.app/Contents/MacOS/Codex \
-    --proxy-server="http://127.0.0.1:7898" \
-    --proxy-bypass-list="<-loopback>"
+    --proxy-server="http://127.0.0.1:7898"
 ```
 
-`<-loopback>` is a Chromium built-in pattern that keeps localhost traffic direct (Codex's internal IPC between components should not go through the proxy).
+Chromium bypasses localhost and loopback addresses by default. Do not add `<-loopback>`: it removes the implicit bypass rules and can send local HTTP traffic through the proxy. See [Chromium proxy documentation](https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#overriding-the-implicit-bypass-rules).
 
 ### Result: App launched normally. All API traffic routed through V2Ray.
 
@@ -236,7 +235,6 @@ curl -s --connect-timeout 2 --proxy "$PROXY_URL" http://localhost:7898 >/dev/nul
 
 nohup "$CODEX_BIN" \
     --proxy-server="$PROXY_URL" \
-    --proxy-bypass-list="<-loopback>" \
     "$@" > /dev/null 2>&1 &
 
 sleep 2

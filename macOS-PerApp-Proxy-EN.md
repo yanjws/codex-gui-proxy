@@ -246,15 +246,14 @@ class FilterDataProvider: NEFilterDataProvider {
 
 ### How It Works
 
-For Electron/Chromium-based apps (VS Code, Discord, Slack, Figma, Codex, Notion, etc.), the built-in `--proxy-server` flag forces all network traffic through a proxy — no dylib injection, no kernel hooks, no sandbox tricks. It's been in Chromium since 2010.
+For Electron/Chromium-based apps, the built-in `--proxy-server` flag configures HTTP, HTTPS and WebSocket requests handled by Chromium. Separate backend services and command-line tools may require proxy environment variables or their own configuration; this is not a guarantee that every connection is proxied.
 
 ```bash
 /Applications/SomeApp.app/Contents/MacOS/SomeApp \
-    --proxy-server="http://127.0.0.1:7898" \
-    --proxy-bypass-list="<-loopback>"
+    --proxy-server="http://127.0.0.1:7898"
 ```
 
-`<-loopback>` is a Chromium built-in pattern that keeps localhost traffic direct (for app IPC).
+Chromium bypasses localhost and loopback addresses by default. `<-loopback>` removes those implicit bypass rules; omit it to preserve local direct connections. See [Chromium proxy documentation](https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#overriding-the-implicit-bypass-rules).
 
 **Why `HTTP_PROXY` env vars don't work:** Chromium ignores them — it uses its own Network Service, independent of libcurl/CFNetwork proxy resolution.
 
