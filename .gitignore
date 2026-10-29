@@ -11,3 +11,31 @@
 # Backup files
 *.bak
 *.orig
+
+# Local editor settings
+.idea/
+.vscode/
+*.iml
+
+# Xcode
+build/
+dist/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+__pycache__/
+*.dSYM/
+*.xcarchive/
+
+# Local packages, logs and secrets
+*.dmg
+*.log
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.mobileprovision
+
+# Local CLI configuration
+codex-proxy-launcher.env

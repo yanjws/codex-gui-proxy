@@ -199,11 +199,10 @@ Chromium 在 macOS 上**不读取** `HTTP_PROXY` 环境变量。Chromium 的代�
 
 ```bash
 /Applications/Codex.app/Contents/MacOS/Codex \
-    --proxy-server="http://127.0.0.1:7898" \
-    --proxy-bypass-list="<-loopback>"
+    --proxy-server="http://127.0.0.1:7898"
 ```
 
-`<-loopback>` 是 Chromium 内置模式，让本地回环地址绕过代理（Codex 组件间 IPC 走 localhost，不应走代理）。
+Chromium 默认让 localhost 和回环地址直连。不要添加 `<-loopback>`：它会移除默认绕过规则，反而可能将本地 HTTP 请求送入代理。详见 [Chromium 代理文档](https://chromium.googlesource.com/chromium/src/+/HEAD/net/docs/proxy.md#overriding-the-implicit-bypass-rules)。
 
 ### 结果：应用正常启动，所有 API 流量经由 V2Ray 代理。
 
@@ -236,7 +235,6 @@ curl -s --connect-timeout 2 --proxy "$PROXY_URL" http://localhost:7898 >/dev/nul
 
 nohup "$CODEX_BIN" \
     --proxy-server="$PROXY_URL" \
-    --proxy-bypass-list="<-loopback>" \
     "$@" > /dev/null 2>&1 &
 
 sleep 2
